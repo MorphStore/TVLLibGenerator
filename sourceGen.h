@@ -9,6 +9,8 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <regex>
+#include <sys/stat.h>
 
 /*!
 * This file contains convenience functions for the TVL source code generation
