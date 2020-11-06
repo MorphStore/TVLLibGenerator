@@ -20,7 +20,7 @@ There are different property files, which define the behavior of the generator:
 - *configs/\<primitive_class\>/\<primitive_name\>/interface.conf* Contains the properties required for the interface of a primitive
 - *configs/\<primitive_class\>/\<primitive_name\>/\<isa\>.conf* Contains the properties required for the specialization of a primitive for a certain ISA (Instruction Set Architecture). Different register sizes and base types can be supported. This will result in different processing styles for the same ISA. 
   
-Note that only the classes, primitives, and ISAs listed in the config files will be used for code generation, even if more folders or property files are present. This enables building only a subset of the TVL.
+Note that only the classes, primitives, and ISAs listed in the property files will be used for code generation, even if more folders or property files are present. This enables building only a subset of the TVL.
 Feel free to extend the given property files with your own primitives.
   
 
