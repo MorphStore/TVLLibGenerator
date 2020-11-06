@@ -13,7 +13,8 @@
 #include <sys/stat.h>
 
 /*!
-* This file contains convenience functions for the TVL source code generation
+* This file contains convenience functions for the TVL source code generation.
+* The indentation is set automatically if these functions are used.
 */
 
 static int tab_level=0;
@@ -35,34 +36,23 @@ void switchOutputFile(std::string output){
   return;
 }
 
+//!Used by other utility functions in this file 
 void insert_tabs(){
   for (int i=0;i<tab_level;i++){
     printf("\t");  
   }
 }
 
+//!Inserts defines and includes, used for interface header 
 void insert_head_of_file(char* class_name){
 
- /*  int size=0;
-   for (class_name; *class_name != '\0'; class_name++)
-      size++;
-   
-   class_name-=size;   
-   char *upper_case_name = new char[size];
-   
-   for (int i=0; i<size; i++)
-   {
-       *upper_case_name = toupper(class_name[i]);
-       upper_case_name++;
-   }
-
-   upper_case_name-=size;    */
   printf("#ifndef %s_H\n", class_name);
   printf("#define %s_H\n\n", class_name);
 
   printf("#include \"../vector_extension_structs.h\"\n\n");
 }
 
+//!Like insert_head_of_file but with additional header includes for specilization
 void insert_head_of_implementation_file(char* class_name, char* isa){
   
   printf("#ifndef %s_%s_H\n", class_name, isa);
@@ -92,7 +82,7 @@ void static_TXT(){
   return;
 }
 
-//!Opens a namespace. Note: You have to close this namespace by yourself!
+//!Opens a namespace. Note: You have to close this namespace by yourself using insert_close_bracket()!
 void open_namespace(std::string nsp){
   insert_tabs();
   printf("namespace %s{\n", nsp.c_str()) ;
@@ -123,6 +113,7 @@ void insert_function_interface(char* function_name, int nr_arguments, std::vecto
   
 }
 
+//!Opens a function. Note: You have to close this later using insert_close_bracket(). 
 void open_function(char* function_name, int nr_arguments, std::vector<std::string> arguments, char* return_value="void"){
   insert_tabs();
   printf("%s ", return_value);
@@ -144,13 +135,15 @@ void open_function(char* function_name, int nr_arguments, std::vector<std::strin
   printf("{\n");
   tab_level++;
 }
-//!Opens a struct. Note: You have to close this struct by yourself!
+
+//!Opens a struct. Note: You have to close this struct by yourself using insert_close_bracket()!
 void open_struct(char* struct_name){
   insert_tabs();
   printf("struct %s {\n", struct_name);
   tab_level++;
 }
 
+//!Opens a struct with a template specialization. You have to clos ethis struct with insert_close_bracket(). The template is closed automatically.
 void open_struct_w_template(char* struct_name, int nr_arguments, std::vector<std::string> arguments){
   insert_tabs();
   printf("struct %s <", struct_name);
@@ -180,6 +173,7 @@ void insert_characters_wo_lb(char* text){
   printf("%s", text);
 }
 
+//!Open a template with the template keyword. Close this template with close_template().
 void open_template(){
      insert_tabs();
      printf("template<\n");
@@ -193,6 +187,7 @@ void open_template_spec(){
      tab_level++;
 }
 
+//!Closes a template
 void close_template(){
      tab_level--;
      insert_tabs();
@@ -206,10 +201,12 @@ void insert_close_bracket(){
       printf("}\n");
 }
 
+//!Inserts #endif
 void insert_end_of_file(){
   printf("#endif\n");
 }
 
+//!Inserts
 std::string remove_trail_space(std::string s)
 {
 	auto it = std::find_if (s.rbegin(), s.rend(),
