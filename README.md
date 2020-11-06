@@ -15,7 +15,7 @@ After running the binary, the generated sources can be found in the folder *gene
 ## Configure
 There are different property files, which define the behavior of the generator:
 
-- *configs/configuration.conf* This is the global property file. It defines the primitive classes and ISAs, for which the sources should be generated.
+- *configs/config.conf* This is the global property file. It defines the primitive classes and ISAs, for which the sources should be generated.
 - *configs/\<primitive_class\>/primitives.conf* For each primitive class, this file lists the primitives for which the sources should be generated.
 - *configs/\<primitive_class\>/\<primitive_name\>/interface.conf* Contains the properties required for the interface of a primitive
 - *configs/\<primitive_class\>/\<primitive_name\>/\<isa\>.conf* Contains the properties required for the specialization of a primitive for a certain ISA (Instruction Set Architecture). Different register sizes and base types can be supported. This will result in different processing styles for the same ISA. 
