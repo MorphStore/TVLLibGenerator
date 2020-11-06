@@ -206,7 +206,7 @@ void insert_end_of_file(){
   printf("#endif\n");
 }
 
-//!Inserts
+//!Removes spaces at the end of a string
 std::string remove_trail_space(std::string s)
 {
 	auto it = std::find_if (s.rbegin(), s.rend(),
