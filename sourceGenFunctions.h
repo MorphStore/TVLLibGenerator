@@ -15,10 +15,11 @@ static cfg_opt_t interface_opts[] =
   CFG_END()
 };
 
-//! The primitive list configuration is just a list of primitive names (configs/<primitive_class>/primitives.conf)
+//! The primitive list configuration is just a list of primitive names (configs/<primitive_class>/primitives.conf) and any additional headers, which could be needed
 static cfg_opt_t primitives_opts[] =
 {
   CFG_STR_LIST("primitives", "{ }", CFGF_NONE),
+  CFG_STR_LIST("header", "{ }", CFGF_NONE),
   CFG_END()
 };
 
@@ -177,13 +178,19 @@ int createImplementation( cfg_t *primitives_config, std::vector<char*> isa_names
 * @param primitives A list of the primitive names of this class
 */
 
-int createInterface(char* class_name, std::vector<std::string> primitives){
+int createInterface(char* class_name, std::vector<std::string> primitives, std::vector<std::string> header){
 
     std::cerr << "Create new header file.\n";
     switchOutputFile(std::string("generated/primitives/")+std::string(class_name)+".h");
     std::cerr << "Start the Interface Creation\n";
     //Start creating interface file    
     insert_head_of_file(class_name); //Insert defines and includes
+    
+    //Insert additional headers
+    for (int i=0;i<header.size();i++){
+       insert_include(header[i]);
+    }
+    
     open_namespace("vectorlib"); //Open the namespace vectorlib 
     
     //Loop over all primitives of the primitive class  

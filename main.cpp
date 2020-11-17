@@ -85,8 +85,13 @@
         for (int k=0; k<cfg_size(primitives_config, "primitives"); k++){
           primitives.push_back(std::string(cfg_getnstr(primitives_config, "primitives", k)));
         }
+        //Store the names of all headers of the current class
+        std::vector<std::string> header;
+        for (int k=0; k<cfg_size(primitives_config, "header"); k++){
+          header.push_back(std::string(cfg_getnstr(primitives_config, "header", k)));
+        }
         // Create the interface file for the current primitive class
-        if (createInterface(class_names[m], primitives)==0){
+        if (createInterface(class_names[m], primitives, header)==0){
           //Create the implementation files of the current class (the specialization for the processing styles)
           createImplementation(primitives_config, isa_names, class_names, m);
           }else{

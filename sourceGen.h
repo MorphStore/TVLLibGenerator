@@ -52,6 +52,15 @@ void insert_head_of_file(char* class_name){
   printf("#include \"../vector_extension_structs.h\"\n\n");
 }
 
+void insert_include(std::string file_name){
+  if (file_name.find("<") > file_name.size())
+  printf("#include \"%s\"\n\n", file_name.c_str());
+  else
+  printf("#include %s\n\n", file_name.c_str());
+}
+
+
+
 //!Like insert_head_of_file but with additional header includes for specilization
 void insert_head_of_implementation_file(char* class_name, char* isa){
   
