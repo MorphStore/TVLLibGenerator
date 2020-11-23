@@ -51,7 +51,7 @@ vector_t resultVec = add<processingStyle, vector_base_t_granularity::value>(vect
 
 **Note** This generator harmonizes the interfaces of all primitives. Each primitive is a struct with a name suffix, e.g. *add_t*, which has an apply function. Additionally, there is a convenience function, e.g. *add(..)*, which calls the apply function. Thus, if you are coming from an older TVL version and decided to use the generated code, you might have to refactor you existing code to the partially new interface, i.e. delete any direct calls of the apply function, or add the *_t*-suffix.
 
-### Processing Style and additional template parameters
+### Processing Style and Additional Template Parameters
 A processing style is a nested template parameter, which defines the instruction set, the vector size, and the type of the data elements. In the code above, the instruction set is AVX512, the vector registers are 512 bit wide (note that AVX512 can also deal with smaller registers), and the base data is made of unsigned 64-bit integers.
 
 You can use different processig styles with different instruction sets, even in the same compilation unit. But be aware that the convenient access of the boiler plate constants only work for one processing style at a time. You can, however (a) access them directly but with ugly syntax, e.g. *processingStyle::vector_helper_t::granularity::value* or (b) use a prefix when importing the boiler plate and using the constants (see header/vector_extension_structs.h l.45-54).
