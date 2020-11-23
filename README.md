@@ -29,6 +29,7 @@ For supporting an instruction set, not only the implementation of the primitives
 - Intel: SSE, AVX2, AVX512
 - ARM: NEON, SVE (currently not supported by the generator, but you can find a hard-coded prototype backend in our [TVL repository](https://github.com/MorphStore/TVLLib/tree/simd-arm_sve/vector/simd/sve)
 - NEC: Tsubasa SX Aurora
+
 All mappings can be found in *header/extension_\<isa\>.h*.
 You are, however, welcome to contribute the mappings for other instruction sets.
 
@@ -60,7 +61,9 @@ In the example above, there is one additional template parameter.
 
 ### Build
 Compile with the according flags required for all instruction sets, you are using and include one or more additional flags (DSSE, DAVXTWO, DAVX512, or DNEON) to make the TVL include only the necessary headers.
-For instance, the code above can be compiled using *g++ -DAVXTWO -DAVX512 -mavx2 -mavx512f mySouceFile.cpp*.
+For instance, the code above can be compiled using 
+
+*g++ -DAVXTWO -DAVX512 -mavx2 -mavx512f mySouceFile.cpp*
 
 #### Known issues
 - Depending on the instruction set you are using, not all parameters are requied for each implementation. To disable the according warning when compiling using g++, you may use the flag *-Wno-unused-parameter*.
