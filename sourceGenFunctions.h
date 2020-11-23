@@ -148,7 +148,7 @@ int createImplementation( cfg_t *primitives_config, std::vector<char*> isa_names
                   template_spec.push_back(cfg_getnstr(ps_cfg, "template_parameters", i*cfg_getint(ps_cfg, "nr_additional_template_parameters")+j));
                 }
                 //Open the specialized struct
-                open_struct_w_template(cfg_getstr(interface_cfg, "primitive_name"),  cfg_getint(ps_cfg, "nr_additional_template_parameters") + 1, template_spec);
+                open_struct_w_template(cfg_getstr(interface_cfg, "primitive_name"),  cfg_getint(ps_cfg, "nr_additional_template_parameters") + 1, template_spec, "_t");
                 printf("\n");
                 force_inlineTXT();  //Insert the force inline macro
                 static_TXT();    //Insert the static keyword
@@ -159,7 +159,7 @@ int createImplementation( cfg_t *primitives_config, std::vector<char*> isa_names
                 insert_characters_w_lb(cfg_getnstr(ps_cfg, "implementations", i));
                 
                 insert_close_bracket();  //close function
-                insert_close_bracket();  //close struct
+                insert_close_bracket();printf(";");  //close struct
                 
                 printf("\n");
               }
@@ -225,14 +225,14 @@ int createInterface(char* class_name, std::vector<std::string> primitives, std::
         }
         close_template();
         
-        open_struct(cfg_getstr(interface_cfg, "primitive_name")); //Create a struct with the name of the primitive (We will have to clos ethis later) 
+        open_struct(cfg_getstr(interface_cfg, "primitive_name"),"_t"); //Create a struct with the name of the primitive (We will have to clos ethis later) 
         force_inlineTXT(); //Insert the force inline macro
         static_TXT(); //Intert the static keyword
        
         //Create the apply function
         insert_function_interface("apply", cfg_size(interface_cfg, "arguments"), function_args, cfg_getstr(interface_cfg, "return_type"));
         
-        insert_close_bracket();  //close struct
+        insert_close_bracket();printf(";");  //close struct
         printf("\n");
         
         //Write the convenience function
@@ -279,7 +279,7 @@ int createInterface(char* class_name, std::vector<std::string> primitives, std::
 
         }
         
-        //Write the template, force nline macro and static keayword (just like above), but do not open a struct
+        //Write the template, force inline macro and static keayword (just like above), but do not open a struct
         open_template();
         insert_characters_wo_lb("class ProcessingStyle,\n"); //The first template parameter is always the processing style
         for (int i=0; i<cfg_size(interface_cfg, "templates"); i++){  
@@ -298,6 +298,7 @@ int createInterface(char* class_name, std::vector<std::string> primitives, std::
         open_function(cfg_getstr(interface_cfg, "primitive_name"), cfg_size(interface_cfg, "arguments"), function_args, cfg_getstr(interface_cfg, "return_type") );
         insert_characters_wo_lb("return ");
         insert_characters_wo_lb(cfg_getstr(interface_cfg, "primitive_name"));
+        printf("_t");
         
         //The template specialization
         open_template_spec();

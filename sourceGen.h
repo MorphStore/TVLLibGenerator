@@ -68,7 +68,7 @@ void insert_head_of_implementation_file(char* class_name, char* isa){
   printf("#define %s_%s_H\n\n", class_name, isa);
   
   printf("#include \"../../../preprocessor.h\"\n");
-  printf("#include \"../extension_%s.h\n", isa);
+  printf("#include \"../extension_%s.h\"\n", isa);
   printf("#include \"../../../primitives/%s.h\"\n", class_name);
 
   printf("#include <functional>\n");
@@ -123,10 +123,10 @@ void insert_function_interface(char* function_name, int nr_arguments, std::vecto
 }
 
 //!Opens a function. Note: You have to close this later using insert_close_bracket(). 
-void open_function(char* function_name, int nr_arguments, std::vector<std::string> arguments, char* return_value="void"){
+void open_function(char* function_name, int nr_arguments, std::vector<std::string> arguments, char* return_value="void", char* suffix=""){
   insert_tabs();
   printf("%s ", return_value);
-  printf("%s (\n", function_name);
+  printf("%s%s (\n", function_name, suffix);
   tab_level++;
   
   for (int i=0; i<nr_arguments;i++){
@@ -145,10 +145,17 @@ void open_function(char* function_name, int nr_arguments, std::vector<std::strin
   tab_level++;
 }
 
-//!Opens a struct. Note: You have to close this struct by yourself using insert_close_bracket()!
+
+//!Opens a struct. A suffix for the name of the struct is an optional parameter. Note: You have to close this struct by yourself using insert_close_bracket()!
 void open_struct(char* struct_name){
   insert_tabs();
   printf("struct %s {\n", struct_name);
+  tab_level++;
+}
+
+void open_struct(char* struct_name, char* suffix){
+  insert_tabs();
+  printf("struct %s%s {\n", struct_name, suffix);
   tab_level++;
 }
 
@@ -156,6 +163,23 @@ void open_struct(char* struct_name){
 void open_struct_w_template(char* struct_name, int nr_arguments, std::vector<std::string> arguments){
   insert_tabs();
   printf("struct %s <", struct_name);
+   
+   for (int i=0; i<nr_arguments;i++){
+    if (i==nr_arguments-1){
+      printf(" %s>", arguments[i].c_str());
+    }else{
+      printf("%s, ", arguments[i].c_str());
+    }
+      
+  }
+  printf(" {");
+  tab_level++;
+  return;
+}
+
+void open_struct_w_template(char* struct_name, int nr_arguments, std::vector<std::string> arguments, char* suffix){
+  insert_tabs();
+  printf("struct %s%s <", struct_name, suffix);
    
    for (int i=0; i<nr_arguments;i++){
     if (i==nr_arguments-1){
