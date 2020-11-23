@@ -27,7 +27,7 @@ Feel free to extend the given property files with your own primitives.
 For supporting an instruction set, not only the implementation of the primitives is necessary, but also a mapping of the instruction specific data types, i.e. masks and vector registers. At the moment, this mapping exists for the following instruction sets:
 - All: Scalar
 - Intel: SSE, AVX2, AVX512
-- ARM: NEON, SVE (currently not supported by the generator, but you can find a hard-coded prototype backend in our [TVL repository](https://github.com/MorphStore/TVLLib/tree/simd-arm_sve/vector/simd/sve)
+- ARM: NEON, SVE (currently not supported by the generator, but you can find a hard-coded prototype backend in our [TVL repository](https://github.com/MorphStore/TVLLib/tree/simd-arm_sve/vector/simd/sve))
 - NEC: Tsubasa SX Aurora
 
 All mappings can be found in *header/extension_\<isa\>.h*.
