@@ -49,7 +49,7 @@ void insert_head_of_file(char* class_name){
   printf("#ifndef %s_H\n", class_name);
   printf("#define %s_H\n\n", class_name);
 
-  printf("#include \"../vector_extension_structs.h\"\n\n");
+  printf("#include \"../../header/vector_extension_structs.h\"\n\n");
 }
 
 void insert_include(std::string file_name){
@@ -67,9 +67,9 @@ void insert_head_of_implementation_file(char* class_name, char* isa){
   printf("#ifndef %s_%s_H\n", class_name, isa);
   printf("#define %s_%s_H\n\n", class_name, isa);
   
-  printf("#include \"../../../preprocessor.h\"\n");
-  printf("#include \"../extension_%s.h\"\n", isa);
-  printf("#include \"../../../primitives/%s.h\"\n", class_name);
+  printf("#include \"../../../header/preprocessor.h\"\n");
+  printf("#include \"../../../header/extension_%s.h\"\n", isa);
+  printf("#include \"../../primitives/%s.h\"\n", class_name);
 
   printf("#include <functional>\n");
   printf("\n");
