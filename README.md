@@ -34,7 +34,7 @@ All mappings can be found in *header/extension_\<isa\>.h*.
 You are, however, welcome to contribute the mappings for other instruction sets.
 
 ## Using the TVL
-Include the files *"header/vector_extension_structs.h"* and *"generated/\<isa\>/primitives/\<primitiv_class\>_\<isa\>.h"* and you are ready to use each included primitive, e.g. the *add* primitive for AVX512 and 64 bit data elements (from generated/avx512/primitives/calc.h): 
+Include the files *"header/vector_extension_structs.h"* and *"generated/\<isa\>/primitives/\<primitive_class\>_\<isa\>.h"* and you are ready to use each included primitive, e.g. the *add* primitive for AVX512 and 64 bit data elements (from generated/avx512/primitives/calc.h): 
 
 ```c++
 using processingStyle = avx512<v512<uint64_t>>;
