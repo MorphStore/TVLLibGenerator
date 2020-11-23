@@ -41,8 +41,10 @@ using processingStyle = avx512<v512<uint64_t>>;
 //This brings some convenient access to constants, e.g. vector_base_t_granularity::value 
 IMPORT_VECTOR_BOILER_PLATE(processingStyle) 
 
-//load something into two vector registers vector1 and vector2 of type vector_t (you may use the load primitive for this
+//Load something into two vector registers vector1 and vector2 of type vector_t.
+//You may use the load primitive for this purpose.
 
+//Call the add primitive
 vector_t resultVec = add<processingStyle, vector_base_t_granularity::value>(vector1, vector2);
 ```
 
