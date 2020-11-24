@@ -157,4 +157,4 @@ For instance, the code above can be compiled using
 where *TVLLibGenerator* is the folder containing the *header* and *generated* folders, and mySouceFile.cpp is the source code using the TVL.
 
 #### Known issues
-- Depending on the instruction set you are using, not all parameters are requied for each implementation. To disable the according warning when compiling using g++, you may use the flag *-Wno-unused-parameter*.
+- Depending on the instruction set you are using, not all parameters are required for each implementation. To disable the according warning when compiling using g++, you may use the flag *-Wno-unused-parameter*.
