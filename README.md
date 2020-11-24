@@ -15,36 +15,40 @@ After running the binary, the generated sources can be found in the folder *gene
 ## Configure
 There are different property files, which define the behavior of the generator:
 
-- *configs/config.conf* This is the global property file. It defines the primitive classes and ISAs, for which the sources should be generated.
-- *configs/\<primitive_class\>/primitives.conf* For each primitive class, this file lists the primitives for which the sources should be generated. If additional headers are required by a primitive class, they are also noted here.
-- *configs/\<primitive_class\>/\<primitive_name\>/interface.conf* Contains the properties required for the interface of a primitive
-- *configs/\<primitive_class\>/\<primitive_name\>/\<isa\>.conf* Contains the properties required for the specialization of a primitive for a certain ISA (Instruction Set Architecture). Different register sizes and base types can be supported. This will result in different processing styles for the same ISA. 
+- **Global Configuration File** *configs/config.conf* This is the global property file. It defines the primitive classes and ISAs, for which the sources should be generated.
+- **Class Configuration Files** *configs/\<primitive_class\>/primitives.conf* For each primitive class, this file lists the primitives for which the sources should be generated. If additional headers are required by a primitive class, they are also noted here.
+- **Primitive Interface Configuration** *configs/\<primitive_class\>/\<primitive_name\>/interface.conf* Contains the properties required for the interface of a primitive
+- **Primitive Backend** *configs/\<primitive_class\>/\<primitive_name\>/\<isa\>.conf* Contains the properties required for the specialization of a primitive for a certain ISA (Instruction Set Architecture). Different register sizes and base types can be supported. This will result in different processing styles for the same ISA. 
   
 Note that only the classes, primitives, and ISAs listed in the property files will be used for code generation, even if more folders or property files are present. This enables building only a subset of the TVL.
 Feel free to extend the given property files with your own primitives.
 
-In the following, the properties and values for each type of property files is explained
+In the following, the properties and values for each type of property files is explained.
+
+How to read:
+
+**property** *\[type of value\]* Description
 
 ### Global Configuration File (config.conf)
-- **classes** *list of strings* Lists all primitive classes going to be generated. Currently, there are 7 classes: io, calc, compare, create, extract, logic, and manipulate. Make sure to match the class name with the name of the primitive class directory. If you introduce another class for whatever reason, make sure to include it manually in *header/vector_primitives*...And let us know of it. We have been fine with the 7 classes, but different applications might require different solutions.
-- **isa** *list of strings* All ISAs, which are supported. Make sure to name the property files, which are specific for a primitive backend, accordingly, e.g. sse.conf for the sse-backend.
+- **classes** *\[list of strings\]* Lists all primitive classes going to be generated. Currently, there are 7 classes: io, calc, compare, create, extract, logic, and manipulate. Make sure to match the class name with the name of the primitive class directory. If you introduce another class for whatever reason, make sure to include it manually in *header/vector_primitives*...And let us know of it. We have been fine with the 7 classes, but different applications might require different solutions.
+- **isa** *\[list of strings\]* All ISAs, which are supported. Make sure to name the property files, which are specific for a primitive backend, accordingly, e.g. sse.conf for the sse-backend.
 
 ### Class Configuration Files (primitives.conf)
-- **primitives** *list of strings* The name of all primitives of this class. Name the directories with the interfaces and backends accordingly.
-- **header** *list of strings* If this primitive class requires any additional includes, they go here. For relative reference, just provide the relative path. If you want to include a header from another linked library, surround them with *<>* brackets (additonally to the quotation marks). 
+- **primitives** *\[list of strings\]* The name of all primitives of this class. Name the directories with the interfaces and backends accordingly.
+- **header** *\[list of strings\]* If this primitive class requires any additional includes, they go here. For relative reference, just provide the relative path. If you want to include a header from another linked library, surround them with *<>* brackets (additonally to the quotation marks). 
 
 ### Primitive Interface Configuration (interface.conf)
 The interface files are used to create the interface headers and provide a part of the information used for the implementation. To make the implementation work, use *ProcessingStyle* whenever you would referenc ethe processing style in the code.
-- **primitive_class** *string* The name of the primitive class, ideally one of the 7 already supported classes.
-- **primitive_name** *string* The name of the primitive.
-- **templates** *list of strings* If any additional template parameters are used, they go here. If there are default values, you can provide them just like you would do it in the code, e.g. 
+- **primitive_class** *\[string\]* The name of the primitive class, ideally one of the 7 already supported classes.
+- **primitive_name** *\[string\]* The name of the primitive.
+- **templates** *\[list of strings\]* If any additional template parameters are used, they go here. If there are default values, you can provide them just like you would do it in the code, e.g. 
 ```.properties
 # Additional templates for the add primitive
 templates = {"int Granularity = ProcessingStyle::vector_helper_t::granularity::value"}
 ```
  The processing style is always generated automatically as the first template parameter. Hence, it is not required to provide it here.
-- **return_type** *string* The return type of the primitive, mostly either void or  depending on the processing style, e.g. typename ProcessingStyle::vector_t.
-- **arguments** *list of strings* All arguments the primitive takes, including default values (if necessary), e.g.
+- **return_type** *\[string\]* The return type of the primitive, mostly either void or  depending on the processing style, e.g. typename ProcessingStyle::vector_t.
+- **arguments** *\[list of strings\]* All arguments the primitive takes, including default values (if necessary), e.g.
 ```.properties
 # Arguments of the add primitive
 arguments = {"typename ProcessingStyle::vector_t const & p_vec1", "typename ProcessingStyle::vector_t const & p_vec2", "int element_count = ProcessingStyle::vector_helper_t::element_count::value"}
@@ -53,10 +57,10 @@ arguments = {"typename ProcessingStyle::vector_t const & p_vec1", "typename Proc
 ### Primitive Backend (\<isa\>.conf)
 The backend properties are provided in sections, where each section contains the properties for a specific vector size.
 The following properties are available:
-- **base_types** *list of strings* A list of all base types to be supported.
-- **implementations** *list of strings* The implementations for all base types. This works fine with line breaks in case your implementations are a wee bit longer.
-- **nr_additional_template_parameters** *unsigned int* If there are any template parameter specializations (except for the processing style, which is generated automatically), specify how many there are.
-- **template parameters** *list of strings* All additional template specializations. If there is more than one additional template argument and more than one base type, follow this sequence: {base type 1/argument1, base type 1/argument 2, ..., base type n/argument 1, base type n/argument 2,..., base type n/argument m}  
+- **base_types** *\[list of strings\]* A list of all base types to be supported.
+- **implementations** *\[list of strings\]* The implementations for all base types. This works fine with line breaks in case your implementations are a wee bit longer.
+- **nr_additional_template_parameters** *\[unsigned int\]* If there are any template parameter specializations (except for the processing style, which is generated automatically), specify how many there are.
+- **template parameters** *\[list of strings\]* All additional template specializations. If there is more than one additional template argument and more than one base type, follow this sequence: {base type 1/argument1, base type 1/argument 2, ..., base type n/argument 1, base type n/argument 2,..., base type n/argument m}  
 
 An example for the add primitive for avx2 (configs/calc/add/avx2.conf) looks like the following:
 ```.properties
