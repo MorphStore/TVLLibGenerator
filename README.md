@@ -16,12 +16,67 @@ After running the binary, the generated sources can be found in the folder *gene
 There are different property files, which define the behavior of the generator:
 
 - *configs/config.conf* This is the global property file. It defines the primitive classes and ISAs, for which the sources should be generated.
-- *configs/\<primitive_class\>/primitives.conf* For each primitive class, this file lists the primitives for which the sources should be generated.
+- *configs/\<primitive_class\>/primitives.conf* For each primitive class, this file lists the primitives for which the sources should be generated. If additional headers are required by a primitive class, they are also noted here.
 - *configs/\<primitive_class\>/\<primitive_name\>/interface.conf* Contains the properties required for the interface of a primitive
 - *configs/\<primitive_class\>/\<primitive_name\>/\<isa\>.conf* Contains the properties required for the specialization of a primitive for a certain ISA (Instruction Set Architecture). Different register sizes and base types can be supported. This will result in different processing styles for the same ISA. 
   
 Note that only the classes, primitives, and ISAs listed in the property files will be used for code generation, even if more folders or property files are present. This enables building only a subset of the TVL.
 Feel free to extend the given property files with your own primitives.
+
+In the following, the properties and values for each type of property files is explained
+
+### Global Configuration File (config.conf)
+- **classes** *list of strings* Lists all primitive classes going to be generated. Currently, there are 7 classes: io, calc, compare, create, extract, logic, and manipulate. Make sure to match the class name with the name of the primitive class directory. If you introduce another class for whatever reason, make sure to include it manually in *header/vector_primitives*...And let us know of it. We have been fine with the 7 classes, but different applications might require different solutions.
+- **isa** *list of strings* All ISAs, which are supported. Make sure to name the property files, which are specific for a primitive backend, accordingly, e.g. sse.conf for the sse-backend.
+
+### Class Configuration Files (primitives.conf)
+- **primitives** *list of strings* The name of all primitives of this class. Name the directories with the interfaces and backends accordingly.
+- **header** *list of strings* If this primitive class requires any additional includes, they go here. For relative reference, just provide the relative path. If you want to include a header from another linked library, surround them with *<>* brackets (additonally to the quotation marks). 
+
+### Primitive Interface Configuration (interface.conf)
+The interface files are used to create the interface headers and provide a part of the information used for the implementation. To make the implementation work, use *ProcessingStyle* whenever you would referenc ethe processing style in the code.
+- **primitive_class** *string* The name of the primitive class, ideally one of the 7 already supported classes.
+- **primitive_name** *string* The name of the primitive.
+- **templates** *list of strings* If any additional template parameters are used, they go here. If there are default values, you can provide them just like you would do it in the code, e.g. 
+```.properties
+# Additional templates for the add primitive
+templates = {"int Granularity = ProcessingStyle::vector_helper_t::granularity::value"}
+```
+ The processing style is always generated automatically as the first template parameter. Hence, it is not required to provide it here.
+- **return_type** *string* The return type of the primitive, mostly either void or  depending on the processing style, e.g. typename ProcessingStyle::vector_t.
+- **arguments** *list of strings* All arguments the primitive takes, including default values (if necessary), e.g.
+```.properties
+# Arguments of the add primitive
+arguments = {"typename ProcessingStyle::vector_t const & p_vec1", "typename ProcessingStyle::vector_t const & p_vec2", "int element_count = ProcessingStyle::vector_helper_t::element_count::value"}
+```
+
+### Primitive Backend (\<isa\>.conf)
+The backend properties are provided in sections, where each section contains the properties for a specific vector size.
+The following properties are available:
+- **base_types** *list of strings* A list of all base types to be supported.
+- **implementations** *list of strings* The implementations for all base types. This works fine with line breaks in case your implementations are a wee bit longer.
+- **nr_additional_template_parameters** *unsigned int* If there are any template parameter specializations (except for the processing style, which is generated automatically), specify how many there are.
+- **template parameters** *list of strings* All additional template specializations. If there is more than one additional template argument and more than one base type, follow this sequence: {base type 1/argument1, base type 1/argument 2, ..., base type n/argument 1, base type n/argument 2,..., base type n/argument m}  
+
+An example for the add primitive for avx2 (configs/calc/add/avx2.conf) looks like the following:
+```.properties
+register_size 128
+{
+  base_types = {"uint64_t", "uint32_t"}
+  implementations = {"return _mm_add_epi64( p_vec1, p_vec2);", "return _mm_add_epi32( p_vec1, p_vec2);"} 
+  nr_additional_template_parameters = 1
+  template_parameters = {"64", "32"}
+}
+
+register_size 256
+{
+  base_types = {"uint64_t", "uint32_t"}
+  implementations = {"return _mm256_add_epi64( p_vec1, p_vec2);", "return _mm256_add_epi32( p_vec1, p_vec2);"} 
+  nr_additional_template_parameters = 1
+  template_parameters = {"64", "32"}
+}
+```
+AVX2 natively supports 256 bit registers, but is also downward compatible to 128 bit registers (which is sometimes the better choice). Thus, we introduced two sections, one for 128 bit and one for 256 bit. For starters, we made it support two differenty sized unsigned integers. The implementations for each of them is a one liner. There is one additional template argument, which we provide for each base type. We could just use the default for this (the ganularity of the base type), but in case we ever want to reinterpret our values, the specialization makes sense. Additonally, it's a great and simple example for demonstration.
 
 ## Supported Instruction Sets
 For supporting an instruction set, not only the implementation of the primitives is necessary, but also a mapping of the instruction specific data types, i.e. masks and vector registers. At the moment, this mapping exists for the following instruction sets:
@@ -34,9 +89,14 @@ All mappings can be found in *header/extension_\<isa\>.h*.
 You are, however, welcome to contribute the mappings for other instruction sets.
 
 ## Using the TVL
-Include the files *"header/vector_extension_structs.h"* and *"generated/\<isa\>/primitives/\<primitive_class\>_\<isa\>.h"* and you are ready to use each included primitive, e.g. the *add* primitive for AVX512 and 64 bit data elements (from generated/avx512/primitives/calc.h): 
+Include the files *"header/vector_extension_structs.h"* and *"generated/\<isa\>/primitives/\<primitive_class\>_\<isa\>.h"* as well as the according primitive interface, and you are ready to use each included primitive, e.g. the *add* primitive for AVX512 and 64 bit data elements (from generated/avx512/primitives/calc.h): 
 
 ```c++
+#include <header/extension_avx512.h>
+#include <header/vector_extension_structs.h>
+#include <generated/primitives/calc.h>
+#include <generated/avx512/primitives/calc_avx512.h>
+
 using processingStyle = avx512<v512<uint64_t>>;
 
 //This brings some convenient access to constants, e.g. vector_base_t_granularity::value 
@@ -48,6 +108,7 @@ IMPORT_VECTOR_BOILER_PLATE(processingStyle)
 //Call the add primitive
 vector_t resultVec = add<processingStyle, vector_base_t_granularity::value>(vector1, vector2);
 ```
+For convenience, there is a header file (*header/vector_primitives.h*), which already includes all interfaces and primitive backends. However, this works only if there is an interface header for each of the 7 primitive classes and a backend for each ISA, which will be used.
 
 **Note** This generator harmonizes the interfaces of all primitives. Each primitive is a struct with a name suffix, e.g. *add_t*, which has an apply function. Additionally, there is a convenience function, e.g. *add(..)*, which calls the apply function. Thus, if you are coming from an older TVL version and decided to use the generated code, you might have to refactor you existing code to the partially new interface, i.e. delete any direct calls of the apply function, or add the *_t*-suffix.
 
@@ -60,10 +121,16 @@ A processing style is always the first template parameter required by a primitiv
 In the example above, there is one additional template parameter.
 
 ### Build
-Compile with the according flags required for all instruction sets, you are using and include one or more additional flags (DSSE, DAVXTWO, DAVX512, or DNEON) to make the TVL include only the necessary headers.
-For instance, the code above can be compiled using 
+There are 3 things necessary for a successful build process:
+1. Compile with the according flags required for all instruction sets, you are using.
+2. Include a flag for each instruction set the TVLwill be using (DSCALAR, DSSE, DAVXTWO, DAVX512, DTSUBASA, or DNEON). This ensures that only the necessary headers are included. This sounds redundant to point 1, but it prevents you from getting compile errors if you are crazy enough to mix native vector code with TVL code that works with another ISA.
+3. Link the directory, whichcontains the *header* and *generated* folders.
 
-*g++ -DAVXTWO -DAVX512 -mavx2 -mavx512f mySouceFile.cpp*
+For instance, the code above can be compiled using
+
+*g++ -DAVXTWO -DAVX512 -mavx2 -mavx512f -I/TVLLibGenerator mySouceFile.cpp*
+
+where *TVLLibGenerator* is the folder containing the *header* and *generated* folders, and mySouceFile.cpp is the source code using the TVL.
 
 #### Known issues
 - Depending on the instruction set you are using, not all parameters are requied for each implementation. To disable the according warning when compiling using g++, you may use the flag *-Wno-unused-parameter*.
