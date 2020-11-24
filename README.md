@@ -8,7 +8,7 @@
 ---[Global Configuration File (config.conf)](#globalconfig)  
 ---[Class Configuration Files (primitives.conf)](#classconfig)  
 ---[Primitive Interface Configuration (interface.conf)](#primitiveconfig)  
----[Primitive Backend (<isa>.conf)](#backendconfig)  
+---[Primitive Backend (\<isa\>.conf)](#backendconfig)  
 [Supported Instruction Sets](supported-instruction-sets)  
 [Using the TVL](using-the-tvl)  
 ---[Processing Style and Additional Template Parameters](processing-style-and-additional-template-parameters)  
