@@ -5,12 +5,12 @@
 //Interface Includes
 #include <header/vector_extension_structs.h>
 #include <generated/primitives/calc.h>
-#include <generated/primitives/compare.h>
+// #include <generated/primitives/compare.h>
 #include <generated/primitives/create.h>
-#include <generated/primitives/extract.h>
-#include <generated/primitives/io.h>
-#include <generated/primitives/logic.h>
-#include <generated/primitives/manipulate.h>
+// #include <generated/primitives/extract.h>
+// #include <generated/primitives/io.h>
+// #include <generated/primitives/logic.h>
+// #include <generated/primitives/manipulate.h>
 #  undef EXTDIR
 
 #ifdef AVX512
@@ -63,13 +63,13 @@
 #endif
 
 #ifdef SCALAR
-#include <generated/primitives/calc_scalar.h>
-#include <generated/primitives/compare_scalar.h>
-#include <generated/primitives/create_scalar.h>
-#include <generated/primitives/extract_scalar.h>
-#include <generated/primitives/io_scalar.h>
-#include <generated/primitives/logic_scalar.h>
-#include <generated/primitives/manipulate_scalar.h>
+#include <generated/scalar/primitives/calc_scalar.h>
+#include <generated/scalar/primitives/compare_scalar.h>
+#include <generated/scalar/primitives/create_scalar.h>
+#include <generated/scalar/primitives/extract_scalar.h>
+#include <generated/scalar/primitives/io_scalar.h>
+#include <generated/scalar/primitives/logic_scalar.h>
+#include <generated/scalar/primitives/manipulate_scalar.h>
 #endif
 //#undef EXTDIR
 
