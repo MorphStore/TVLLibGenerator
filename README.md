@@ -53,7 +53,9 @@ How to read:
 <a id="classconfig"></a>
 ### Class Configuration Files (primitives.conf)
 - **primitives** *\[list of strings\]* The name of all primitives of this class. Name the directories with the interfaces and backends accordingly.
-- **header** *\[list of strings\]* If this primitive class requires any additional includes, they go here. For relative reference, just provide the relative path. If you want to include a header from another linked library, surround them with *<>* brackets (additonally to the quotation marks). 
+- **header** *\[list of strings\]* If this primitive class requires any additional includes, they go here. For relative reference, just provide the relative path. If you want to include a header from a linked library, surround them with *<>* brackets (additonally to the quotation marks). The headers will be included for each ISA. If you require ISA-specific includes, see below.
+- **isa_header** *\[list of strings\]* If one or more ISAs require additional include headers, list these ISAs and the include files here: {"<ISA 1>", "<Header 1 for ISA 1>",..."<Header n for ISA 1>", "<ISA 2>",  "<Header 1 for ISA 2>",...}
+- **isa_header_idx** *\[list of int\]* This is required if *isa_header* is set, for the following reason: *isa_header* is a list of strings, but the generator needs to know which of these strings is an ISA name and which strings are the names of the header files. Thus, *isa_header_idx* lists the indexes of the ISA names in the list provided by *isa_header*. The index is 0-based!
 
 <a id="primitiveconfig"></a>
 ### Primitive Interface Configuration (interface.conf)
@@ -147,7 +149,7 @@ In the example above, there is one additional template parameter.
 ### Build and Link
 There are 3 things necessary for a successful build process:
 1. Compile with the according flags required for all instruction sets, you are using.
-2. Include a flag for each instruction set the TVLwill be using (DSCALAR, DSSE, DAVXTWO, DAVX512, DTSUBASA, or DNEON). This ensures that only the necessary headers are included. This sounds redundant to point 1, but it prevents you from getting compile errors if you are crazy enough to mix native vector code with TVL code that works with another ISA.
+2. Include a flag for each instruction set the TVLwill be using (DSCALAR, DSSE, DAVXTWO, DAVX512, DTSUBASA, DCUDA, or DNEON). This ensures that only the necessary headers are included. This sounds redundant to point 1, but it prevents you from getting compile errors if you are crazy enough to mix native vector code with TVL code that works with another ISA.
 3. Link the directory, which contains the *header* and *generated* folders.
 
 For instance, the code above can be compiled using
