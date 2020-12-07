@@ -1,9 +1,3 @@
-/**
- * @file vector_reg.h
- * @brief Brief description
- * @author Johannes Pietrzyk
- * @todo TODOS?
- */
 
 #ifndef MORPHSTORE_VECTOR_EXTENSION_STRUCTS_H
 #define MORPHSTORE_VECTOR_EXTENSION_STRUCTS_H
@@ -22,11 +16,17 @@
 #    include "extension_sse.h"
 #  endif
 
-#ifdef NEON
+# ifdef NEON
 #   include "extension_neon.h"
-#endif
+# endif
 
-#include "extension_scalar.h"
+# ifdef SCALAR
+# include "extension_scalar.h"
+# endif
+
+#  ifdef CUDA
+#    include "extension_cuda.h"
+#  endif
 
 namespace vectorlib{
 

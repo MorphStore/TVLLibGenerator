@@ -5,12 +5,12 @@
 //Interface Includes
 #include <header/vector_extension_structs.h>
 #include <generated/primitives/calc.h>
-// #include <generated/primitives/compare.h>
+#include <generated/primitives/compare.h>
 #include <generated/primitives/create.h>
-// #include <generated/primitives/extract.h>
-// #include <generated/primitives/io.h>
-// #include <generated/primitives/logic.h>
-// #include <generated/primitives/manipulate.h>
+#include <generated/primitives/extract.h>
+#include <generated/primitives/io.h>
+#include <generated/primitives/logic.h>
+#include <generated/primitives/manipulate.h>
 #  undef EXTDIR
 
 #ifdef AVX512
@@ -71,6 +71,17 @@
 #include <generated/scalar/primitives/logic_scalar.h>
 #include <generated/scalar/primitives/manipulate_scalar.h>
 #endif
+
+#ifdef CUDA
+#include <generated/cuda/primitives/calc_scalar.h>
+#include <generated/cuda/primitives/compare_scalar.h>
+#include <generated/cuda/primitives/create_scalar.h>
+#include <generated/cuda/primitives/extract_scalar.h>
+#include <generated/cuda/primitives/io_scalar.h>
+#include <generated/cuda/primitives/logic_scalar.h>
+#include <generated/cuda/primitives/manipulate_scalar.h>
+#endif
+
 //#undef EXTDIR
 
 

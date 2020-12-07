@@ -37,6 +37,8 @@ static cfg_opt_t primitives_opts[] =
 {
   CFG_STR_LIST("primitives", "{ }", CFGF_NONE),
   CFG_STR_LIST("header", "{ }", CFGF_NONE),
+  CFG_INT_LIST("isa_header_idx", "{ }", CFGF_NONE),
+  CFG_STR_LIST("isa_header", "{ }", CFGF_NONE),
   CFG_END()
 };
 
@@ -73,7 +75,7 @@ static cfg_opt_t ps_opts[] =
 * @param class_idx The index in @class_names for which the implementation file should be created
 */
 
-int createImplementation( cfg_t *primitives_config, std::vector<char*> isa_names, std::vector<char*> class_names, int class_idx){
+int createImplementation( cfg_t *primitives_config, std::vector<char*> isa_names, std::vector<char*> class_names, int class_idx, std::vector<int> isa_header_idx, std::vector<std::string> isa_header){
 
   //Loop over all ISAs
   for (int k=0; k<isa_names.size(); k++){     
@@ -86,6 +88,16 @@ int createImplementation( cfg_t *primitives_config, std::vector<char*> isa_names
           std::cerr << "Start Creation of Processing Style Specialization.\n";
           
           insert_head_of_implementation_file(class_names[class_idx], isa_names[k]);//Insert defines and includes
+          
+          for (int i=0;i<isa_header_idx.size();i++){
+            std::string isa_n(isa_names[k]);
+            if (strcmp(isa_header[isa_header_idx[i]].c_str(),isa_names[k]) == 0) {
+              int l=isa_header_idx[i]+1;
+              int end = (i<isa_header_idx.size()-1) ? isa_header_idx[i+1] : isa_header.size();
+              for(l; l<end; l++)  
+                insert_include(isa_header[l]);  
+            }
+          }
           open_namespace("vectorlib"); //Open the namespace vectorlib
           std::cerr << "Finished writing head of Specilization file.\n";
                

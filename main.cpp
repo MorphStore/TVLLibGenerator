@@ -105,10 +105,23 @@
         for (int k=0; k<cfg_size(primitives_config, "header"); k++){
           header.push_back(std::string(cfg_getnstr(primitives_config, "header", k)));
         }
+        
+        //Store the index for additional isa header array
+        std::vector<int> isa_header_idx;
+        for (int k=0; k<cfg_size(primitives_config, "isa_header_idx"); k++){
+          isa_header_idx.push_back((cfg_getnint(primitives_config, "isa_header_idx", k)));
+        }
+        
+        //Store the information of the isa header array
+        std::vector<std::string> isa_header;
+        for (int k=0; k<cfg_size(primitives_config, "isa_header"); k++){
+          isa_header.push_back(std::string(cfg_getnstr(primitives_config, "isa_header", k)));
+        }
+        
         // Create the interface file for the current primitive class
         if (createInterface(class_names[m], primitives, header)==0){
           //Create the implementation files of the current class (the specialization for the processing styles)
-          createImplementation(primitives_config, isa_names, class_names, m);
+          createImplementation(primitives_config, isa_names, class_names, m, isa_header_idx, isa_header);
           }else{
           std::cerr << "Error during interface creation.\n";
           }
