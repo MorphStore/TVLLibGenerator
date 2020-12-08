@@ -110,6 +110,7 @@ For supporting an instruction set, not only the implementation of the primitives
 - Intel: SSE, AVX2, AVX512
 - ARM: NEON, SVE (currently not supported by the generator, but you can find a hard-coded prototype backend in our [TVL repository](https://github.com/MorphStore/TVLLib/tree/simd-arm_sve/vector/simd/sve))
 - NEC: Tsubasa SX Aurora
+- GPU: CUDA (experimental)
 
 All mappings can be found in *header/extension_\<isa\>.h*.
 You are, however, welcome to contribute the mappings for other instruction sets.
