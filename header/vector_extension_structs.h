@@ -28,6 +28,11 @@
 #    include "extension_cuda.h"
 #  endif
 
+#  ifdef TSUBASA
+#    include "extension_tsubasa.h"
+#  endif
+
+
 namespace vectorlib{
 
 #define IMPORT_VECTOR_BOILER_PLATE(VectorExtension) \
