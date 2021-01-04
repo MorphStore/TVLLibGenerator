@@ -161,7 +161,7 @@ For instance, the code above can be compiled using
 where *TVLLibGenerator* is the folder containing the *header* and *generated* folders, and mySouceFile.cpp is the source code using the TVL.
 
 #### Building the examples
-Examples can be found in the *examples* folder. The script *build_examples.sh* builds all of them and requires an environment variable *TVL*, which contains the path to the TVL, i.e. the folder containing the *header* and *generated* folders. Usually, this is simply the TVLLIBGenerator root folder.
+Examples can be found in the *examples* folder. The script *build_examples.sh* builds all of them and requires an environment variable *TVL*, which contains the path to the TVL, i.e. the folder containing the *header* and *generated* folders. Usually, this is simply the TVLLIBGenerator root folder. It also expects that your compiler, usually g++, is given in the environment variable *CXX*. This is often already set as it is also convenient for other workflows, e.g. when using cmake.
 Currently, the examples use AVX512 and the NEC Tsubasa vector engine.
 **The examples expect that you already run the generator, i.e. that there is a generated folder!**
 
@@ -182,13 +182,13 @@ Unlike **Example 2**, libtest hardcodes the processing style, i.e. you have to c
 
 ##### Example 2: Aggregation benchmark
 This example performs an aggregation on randomly generated integer data (around 200 MB) and measures the elapsed time (excluding data generation). This example shows how to easily implement a solution for different targets without changing the actual operator code, but only the definition of the processing style. Depending on the compiler flag (see *build\_examples.sh*), the benchmark is built either for AVX512, or for the NEC Tsubasa vector engine.
-This examples can also serve as a quick way to get a first impression of the performance of different backends. It can easily be adapted to different backends, because only 3 primitives are used: load (io class), add (calc class), and hadd (calc class). 
+This example can also serve as a quick way to get a first impression of the performance of different backends. It can easily be adapted to different backends, because only 3 primitives are used: load (io class), add (calc class), and hadd (calc class). 
 Note that the performance may significantly vary depending on the amount of values and the vector register size, especially for small amounts. One reason is that small amounts fit in the cache (the exact amount depends on your system). The other reason is that any rest, which does not fill a vector register anymore, is processed in a scalar way. 
 
 #### Known issues
 The following issues can arise when using the generated TVL:  
 - Depending on the instruction set you are using, not all parameters are required for each implementation. To disable the according warning when compiling using g++, you may use the flag *-Wno-unused-parameter*.
-- Compiler Error *"No such file or directory"*. If this is hrown from *vector\_primitives.h*, a primitive class has either no interface (*generated/primitives/\**), or no backend for the system you are trying to build for (*generated/\<isa\>/primitives/\**).  
+- Compiler Error *"No such file or directory"*. If this is thrown from *vector\_primitives.h*, a primitive class has either no interface (*generated/primitives/\**), or no backend for the system you are trying to build for (*generated/\<isa\>/primitives/\**).  
   - Quick fix: Comment out the according lines in *vector\_primitives.h*. This will work as long as you are not actually using a non-existent primitive, e.g. when using the provided examples.  
   - Long fix: Implement the according interface and/or backend, e.g. when you introduce a new backend or primitive (class).  
-- Compiler error: *reference is ambiguous*. Depending on other libraries you include, some primitive names might already be used for something else. No, the compiler is confused and doesn't know which one to take. Resovle this by providing the namespace, e.g. *vectorlib::div* instead of *div* .
+- Compiler error: *reference is ambiguous*. Depending on other libraries you include, some primitive names might already be used for something else. Now, the compiler is confused and doesn't know which one to take. Resovle this by providing the namespace, e.g. *vectorlib::div* instead of *div* .
