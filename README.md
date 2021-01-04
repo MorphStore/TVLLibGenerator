@@ -166,7 +166,7 @@ Currently, the examples use AVX512 and the NEC Tsubasa vector engine.
 **The examples expect that you already run the generator, i.e. that there is a generated folder!**
 
 ##### Example 1: libtest
-This example tests is the TVL is working at all and provides an example for the basic use of TVL primitives. In detail, the following steps are performed:
+This example tests if the TVL is working at all, and provides an example for the basic use of TVL primitives. In detail, the following steps are performed:
 1. A processing style is set and the according boiler plate is imported for more convenience.
 2. The values *1* and *2* are broadcasted into two vector registers. 
 3. The two registers are added element-wise.
