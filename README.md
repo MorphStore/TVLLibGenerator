@@ -163,6 +163,7 @@ where *TVLLibGenerator* is the folder containing the *header* and *generated* fo
 #### Building the examples
 Examples can be found in the *examples* folder. The script *build_examples.sh* builds all of them and requires an environment variable *TVL*, which contains the path to the TVL, i.e. the folder containing the *header* and *generated* folders. Usually, this is simply the TVLLIBGenerator root folder.
 Currently, the examples use AVX512 and the NEC Tsubasa vector engine.
+**The examples expect that you already run the generator, i.e. that there is a generated folder!**
 
 ##### Example 1: libtest
 This example tests is the TVL is working at all and provides an example for the basic use of TVL primitives. In detail, the following steps are performed:
@@ -185,6 +186,7 @@ This examples can also serve as a quick way to get a first impression of the per
 Note that the performance may significantly vary depending on the amount of values and the vector register size, especially for small amounts. One reason is that small amounts fit in the cache (the exact amount depends on your system). The other reason is that any rest, which does not fill a vector register anymore, is processed in a scalar way. 
 
 #### Known issues
+The following issues can arise when using the generated TVL:  
 - Depending on the instruction set you are using, not all parameters are required for each implementation. To disable the according warning when compiling using g++, you may use the flag *-Wno-unused-parameter*.
 - Compiler Error *"No such file or directory"*. If this is hrown from *vector\_primitives.h*, a primitive class has either no interface (*generated/primitives/\**), or no backend for the system you are trying to build for (*generated/\<isa\>/primitives/\**).  
   - Quick fix: Comment out the according lines in *vector\_primitives.h*. This will work as long as you are not actually using a non-existent primitive, e.g. when using the provided examples.  
