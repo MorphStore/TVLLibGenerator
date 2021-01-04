@@ -316,7 +316,12 @@ int createInterface(char* class_name, std::vector<std::string> primitives, std::
         
         //Write the template, force inline macro and static keayword (just like above), but do not open a struct
         open_template();
-        insert_characters_wo_lb("class ProcessingStyle,\n"); //The first template parameter is always the processing style
+        if (cfg_size(interface_cfg, "templates")>0){
+          insert_characters_wo_lb("class ProcessingStyle,\n"); //The first template parameter is always the processing style
+        }
+        else{
+          insert_characters_wo_lb("class ProcessingStyle\n"); //The first template parameter is always the processing style
+        }
         for (int i=0; i<cfg_size(interface_cfg, "templates"); i++){  
           if (i<cfg_size(interface_cfg, "templates")-1) {
             insert_characters_wo_lb(cfg_getnstr(interface_cfg, "templates", i));
@@ -337,7 +342,12 @@ int createInterface(char* class_name, std::vector<std::string> primitives, std::
         
         //The template specialization
         open_template_spec();
-        insert_characters_wo_lb("ProcessingStyle,\n"); //The first template parameter is always the processing style
+        if (cfg_size(interface_cfg, "templates")>0){
+          insert_characters_wo_lb("ProcessingStyle,\n"); //The first template parameter is always the processing style
+        }
+        else{
+          insert_characters_wo_lb("ProcessingStyle\n"); //The first template parameter is always the processing style
+        }
         for (int i=0; i<cfg_size(interface_cfg, "templates"); i++){  
           if (i<cfg_size(interface_cfg, "templates")-1) {
             insert_characters_wo_lb(const_cast<char*> (template_names[i].c_str()));
