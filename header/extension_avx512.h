@@ -51,7 +51,8 @@ namespace vectorlib{
               uint32_t, 
               uint64_t
           >::type
-        >::type;     
+        >::type;    
+      using is_scalable = std::integral_constant<bool, false>; 
        
    };
    
@@ -79,6 +80,7 @@ namespace vectorlib{
           uint16_t, 
           uint32_t
         >::type;     
+      using is_scalable = std::integral_constant<bool, false>;
        
    };
    
@@ -101,6 +103,7 @@ namespace vectorlib{
 
       using size = std::integral_constant<size_t, sizeof(vector_t)>;
       using mask_t = uint16_t;
+      using is_scalable = std::integral_constant<bool, false>;
    };
    
    //For some reason gcc doesn't find this function, so we took it directly from avx512fintrin.h    

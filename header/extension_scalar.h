@@ -26,6 +26,7 @@ namespace vectorlib {
       using vector_t = T;
       using size = std::integral_constant<size_t, sizeof(vector_t)>;
       using mask_t = uint16_t;
+      using is_scalable = std::integral_constant<bool, false>;
    };
 
    template<typename T>
@@ -36,6 +37,7 @@ namespace vectorlib {
       using vector_t = T;
       using size = std::integral_constant<size_t, sizeof(vector_t)>;
       using mask_t = uint16_t;
+      using is_scalable = std::integral_constant<bool, false>;
    };
 
    template<typename T>
@@ -46,6 +48,7 @@ namespace vectorlib {
       using vector_t = T;
       using size = std::integral_constant<size_t, sizeof(vector_t)>;
       using mask_t = uint16_t;
+      using is_scalable = std::integral_constant<bool, false>;
    };
 
    template<typename T>
@@ -55,7 +58,8 @@ namespace vectorlib {
       using base_t = typename vector_helper_t::base_t;
       using vector_t = T;
       using size = std::integral_constant<size_t, sizeof(vector_t)>;
-      using mask_t = uint16_t;
+      using mask_t = uint8_t;
+      using is_scalable = std::integral_constant<bool, false>;
    };
 
    template< typename T >
