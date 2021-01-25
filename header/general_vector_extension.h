@@ -39,7 +39,6 @@ namespace vectorlib {
    };
 
    template<typename T>
-   //using v1 = vector_view<(sizeof(T)<<3), T>;
    using v64 = scalar_view<64, T>;
    template<typename T>
    using v32 = scalar_view<32, T>;
