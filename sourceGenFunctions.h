@@ -26,37 +26,37 @@ static cfg_opt_t interface_opts[] =
 {
   CFG_STR("primitive_class", " ", CFGF_NONE),
   CFG_STR("primitive_name", " ", CFGF_NONE),
-  CFG_STR_LIST("templates", "{ }", CFGF_NONE),
+  CFG_STR_LIST("templates", (char *)"{ }", CFGF_NONE),
   CFG_STR("return_type", "void", CFGF_NONE),
-  CFG_STR_LIST("arguments", "{ }", CFGF_NONE), 
+  CFG_STR_LIST("arguments", (char *)"{ }", CFGF_NONE), 
   CFG_END()
 };
 
 //! The primitive list configuration is just a list of primitive names (configs/<primitive_class>/primitives.conf) and any additional headers, which could be needed
 static cfg_opt_t primitives_opts[] =
 {
-  CFG_STR_LIST("primitives", "{ }", CFGF_NONE),
-  CFG_STR_LIST("header", "{ }", CFGF_NONE),
-  CFG_INT_LIST("isa_header_idx", "{ }", CFGF_NONE),
-  CFG_STR_LIST("isa_header", "{ }", CFGF_NONE),
+  CFG_STR_LIST("primitives", (char *)"{ }", CFGF_NONE),
+  CFG_STR_LIST("header", (char *)"{ }", CFGF_NONE),
+  CFG_INT_LIST("isa_header_idx", (char *)"{ }", CFGF_NONE),
+  CFG_STR_LIST("isa_header", (char *)"{ }", CFGF_NONE),
   CFG_END()
 };
 
 //! A global configuration file defines the primitive class names and the ISAs (configs/config.conf)
 static cfg_opt_t class_opts[] =
 {
-  CFG_STR_LIST("classes", "{ }", CFGF_NONE),
-  CFG_STR_LIST("isa", "{ }", CFGF_NONE),
+  CFG_STR_LIST("classes", (char *)"{ }", CFGF_NONE),
+  CFG_STR_LIST("isa", (char *)"{ }", CFGF_NONE),
   CFG_END()
 };
   
 //! There is one section like this per register size in the primitive configurations (configs/<primitive_class>/<primitive_name>/<isa>.conf)       
 static cfg_opt_t ps_section[] = 
 {
-  CFG_STR_LIST("base_types", "{ }", CFGF_NONE),
-  CFG_STR_LIST("implementations", "{ }", CFGF_NONE),
+  CFG_STR_LIST("base_types", (char *)"{ }", CFGF_NONE),
+  CFG_STR_LIST("implementations", (char *)"{ }", CFGF_NONE),
   CFG_INT("nr_additional_template_parameters", 0, CFGF_NONE),
-  CFG_STR_LIST("template_parameters", "{ }", CFGF_NONE),
+  CFG_STR_LIST("template_parameters", (char *)"{ }", CFGF_NONE),
   CFG_END()
 };    
 

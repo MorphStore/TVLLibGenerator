@@ -116,7 +116,7 @@ void open_namespace(std::string nsp){
 }
 
 //!Note: Inserts a function interface and defaults to a deleted function
-void insert_function_interface(char* function_name, int nr_arguments, std::vector<std::string> arguments, char* return_value="void"){
+void insert_function_interface(const char* function_name, int nr_arguments, std::vector<std::string> arguments, const char* return_value="void"){
   insert_tabs();
   printf("%s \n", return_value);
   insert_tabs();
@@ -140,7 +140,7 @@ void insert_function_interface(char* function_name, int nr_arguments, std::vecto
 }
 
 //!Opens a function. Note: You have to close this later using insert_close_bracket(). 
-void open_function(char* function_name, int nr_arguments, std::vector<std::string> arguments, char* return_value="void", char* suffix=""){
+void open_function(const char* function_name, int nr_arguments, std::vector<std::string> arguments, const char* return_value="void", const char* suffix=""){
   insert_tabs();
   printf("%s ", return_value);
   printf("%s%s (\n", function_name, suffix);
@@ -170,14 +170,14 @@ void open_struct(char* struct_name){
   tab_level++;
 }
 
-void open_struct(char* struct_name, char* suffix){
+void open_struct(const char* struct_name, const char* suffix){
   insert_tabs();
   printf("struct %s%s {\n", struct_name, suffix);
   tab_level++;
 }
 
 //!Opens a struct with a template specialization. You have to clos ethis struct with insert_close_bracket(). The template is closed automatically.
-void open_struct_w_template(char* struct_name, int nr_arguments, std::vector<std::string> arguments){
+void open_struct_w_template(const char* struct_name, int nr_arguments, std::vector<std::string> arguments){
   insert_tabs();
   printf("struct %s <", struct_name);
    
@@ -194,7 +194,7 @@ void open_struct_w_template(char* struct_name, int nr_arguments, std::vector<std
   return;
 }
 
-void open_struct_w_template(char* struct_name, int nr_arguments, std::vector<std::string> arguments, char* suffix){
+void open_struct_w_template(const char* struct_name, int nr_arguments, std::vector<std::string> arguments, const char* suffix){
   insert_tabs();
   printf("struct %s%s <", struct_name, suffix);
    
@@ -212,13 +212,13 @@ void open_struct_w_template(char* struct_name, int nr_arguments, std::vector<std
 }
 
 //!Inserts a character array and a line break
-void insert_characters_w_lb(char* text){
+void insert_characters_w_lb(const char* text){
   insert_tabs();
   printf("%s\n", text);
 }
 
 //!Inserts a character array without a line break at the end
-void insert_characters_wo_lb(char* text){
+void insert_characters_wo_lb(const char* text){
   insert_tabs();
   printf("%s", text);
 }
