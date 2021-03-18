@@ -20,27 +20,27 @@
 #  include <generated/avx512/primitives/extract_avx512.h>
 #  include <generated/avx512/primitives/io_avx512.h>
  #  include <generated/avx512/primitives/logic_avx512.h>
-// #  include <generated/avx512/primitives/manipulate_avx512.h>
+ #  include <generated/avx512/primitives/manipulate_avx512.h>
 #endif
 
 #ifdef AVXTWO
 #  include <generated/avx2/primitives/calc_avx2.h>
 #  include <generated/avx2/primitives/compare_avx2.h>
 #  include <generated/avx2/primitives/create_avx2.h>
-// #  include <generated/avx2/primitives/extract_avx2.h>
+ #  include <generated/avx2/primitives/extract_avx2.h>
 #  include <generated/avx2/primitives/io_avx2.h>
 #  include <generated/avx2/primitives/logic_avx2.h>
-//#  include <generated/avx2/primitives/manipulate_avx2.h>
+#  include <generated/avx2/primitives/manipulate_avx2.h>
 #endif
 
-#ifdef SSE/*
+#ifdef SSE
 #  include <generated/sse/primitives/calc_sse.h>
 #  include <generated/sse/primitives/compare_sse.h>
 #  include <generated/sse/primitives/create_sse.h>
 #  include <generated/sse/primitives/extract_sse.h>
 #  include <generated/sse/primitives/io_sse.h>
 #  include <generated/sse/primitives/logic_sse.h>
-#  include <generated/sse/primitives/manipulate_sse.h>*/
+#  include <generated/sse/primitives/manipulate_sse.h>
 #endif
 #ifdef NEON
 #  include <generated/neon/primitives/calc_neon.h>
