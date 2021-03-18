@@ -1,8 +1,5 @@
 #include <iostream>
 #include <cstdint>
-#include <header/extension_tsubasa.h>
-//#include <header/extension_avx2.h>
-//#include <header/extension_scalar.h>
 #include <header/vector_extension_structs.h>
 #include <header/vector_primitives.h>
 
@@ -10,8 +7,8 @@ using namespace vectorlib;
 
 int main( void ) {
 
-    using ve = tsubasa<v16384<uint64_t> >;
-   // using ve = avx2<v256<uint64_t> >;
+   // using ve = tsubasa<v16384<uint64_t> >;
+    using ve = avx2<v256<uint64_t> >;
    // using ve = scalar<v64<uint64_t> >;
 
     IMPORT_VECTOR_BOILER_PLATE(ve)    
